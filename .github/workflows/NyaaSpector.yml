@@ -1,0 +1,46 @@
+name: NyaaSpector
+
+on:
+  schedule: 
+    - cron: "*/120 * * * *"
+  workflow_dispatch:
+  push:
+    branches: ["master", "main"]
+
+jobs:
+  nyaaspector:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+        
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Obtaining dramas
+        run: python main.py
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          if ! git diff --quiet; then
+            echo "NyaaSpector has changed"
+            echo "nyaaspector_changed=true" >> $GITHUB_ENV
+          fi
+
+      - name: Commit and push nyaaspector
+        if: env.nyaaspector_changed == 'true'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "<>"
+          git add torrents.json
+          git commit -m "Update torrents"
+          git push
