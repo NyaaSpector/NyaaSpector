@@ -34,10 +34,11 @@ for page in range(1, 6):
 
     def get_torrent_info(torrent_id):
         urls = [
-            ("https://nyaa.si/view/", "hidden"),
-            ("https://nyaa.land/view/", "deleted"),
+            ("https://nyaa.si/view/", "hidden", "1"),
+            ("https://nyaa.land/view/", "deleted", "2"),
+            ("https://nya.iss.one/view/", "deleted", "3"),
         ]
-        for base_url, status in urls:
+        for base_url, status, domain in urls:
             torrent_url = f"{base_url}{torrent_id}"
             response = requests.get(torrent_url)
             if response.status_code == 200:
@@ -91,7 +92,8 @@ for page in range(1, 6):
                     "status": status,
                     "timestamp": timestamp,
                     "submitter": submitter,
-                    "category": category
+                    "category": category,
+                    "domain": domain
                 }
         return None
 
@@ -109,7 +111,11 @@ for page in range(1, 6):
             ):
                 missing_torrents_info[str(missing_id)] = info
 
+    sorted_missing_torrents_info = dict(
+        sorted(missing_torrents_info.items(), key=lambda item: int(item[0]), reverse=True)
+    )
+
     with open(json_filename, "w", encoding="utf-8") as json_file:
         json.dump(
-            missing_torrents_info, json_file, ensure_ascii=False, separators=(",", ":")
+            sorted_missing_torrents_info, json_file, ensure_ascii=False, separators=(",", ":")
         )

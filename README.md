@@ -40,6 +40,7 @@ The `torrents.json` file contains a dictionary where each key is the ID of a mis
 - `status`: Torrent status (`hidden` or `deleted`)
 - `timestamp`: Publication date of the torrent (in Unix timestamp)
 - `submitter`: Submitter of the torrent
+- `domain`: Data source domain index
 
 ## License
 
