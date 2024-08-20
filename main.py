@@ -78,6 +78,12 @@ for page in range(1, 6):
                     else None
                 )
 
+                category_links = soup.find_all("a", href=re.compile(r"/\?c="))
+                if len(category_links) >= 2:
+                    category = category_links[1]["href"].replace("/?c=", "")
+                else:
+                    category = None
+
                 return {
                     "title": title,
                     "size": size,
@@ -85,6 +91,7 @@ for page in range(1, 6):
                     "status": status,
                     "timestamp": timestamp,
                     "submitter": submitter,
+                    "category": category
                 }
         return None
 
@@ -98,6 +105,7 @@ for page in range(1, 6):
                 or existing_info.get("info_hash") != info["info_hash"]
                 or existing_info.get("timestamp") != info["timestamp"]
                 or existing_info.get("submitter") != info["submitter"]
+                or existing_info.get("category") != info["category"]
             ):
                 missing_torrents_info[str(missing_id)] = info
 
