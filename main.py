@@ -35,8 +35,7 @@ for page in range(1, 6):
     def get_torrent_info(torrent_id):
         urls = [
             ("https://nyaa.si/view/", "hidden", "1"),
-            ("https://nyaa.land/view/", "deleted", "2"),
-            ("https://nya.iss.one/view/", "deleted", "3"),
+            ("https://nya.iss.one/view/", "deleted", "2"),
         ]
         for base_url, status, domain in urls:
             torrent_url = f"{base_url}{torrent_id}"
