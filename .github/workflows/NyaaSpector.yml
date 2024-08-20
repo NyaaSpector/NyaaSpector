@@ -7,6 +7,9 @@ on:
   push:
     branches: ["master", "main"]
 
+permissions:
+  contents: write
+
 jobs:
   nyaaspector:
     runs-on: ubuntu-latest
